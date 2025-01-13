@@ -1,176 +1,149 @@
 import tkinter as tk
 from produto import cadastrar_produto, atualizar_lista_produtos
-from venda import registrar_venda, gerar_relatorio
+from venda import registrar_venda
 from cliente import cadastrar_cliente, atualizar_lista_clientes
 from fornecedor import cadastrar_fornecedor, atualizar_lista_fornecedores
 from funcionario import cadastrar_funcionario, atualizar_lista_funcionarios
 
 # Funções para mostrar cada aba
-def mostrar_cadastro_produtos():
-    frame_produtos.pack(fill='both', padx=10, pady=10)
-    frame_vendas.pack_forget()
-    frame_cliente.pack_forget()
-    frame_fornecedor.pack_forget()
-    frame_funcionario.pack_forget()
-    frame_relatorio.pack_forget()
-
-def mostrar_registro_vendas():
-    frame_produtos.pack_forget()
-    frame_vendas.pack(fill='both', padx=10, pady=10)
-    frame_cliente.pack_forget()
-    frame_fornecedor.pack_forget()
-    frame_funcionario.pack_forget()
-    frame_relatorio.pack_forget()
-
-def mostrar_cliente():
-    frame_cliente.pack(fill='both', padx=10, pady=10)
-    frame_produtos.pack_forget()
-    frame_vendas.pack_forget()
-    frame_fornecedor.pack_forget()
-    frame_funcionario.pack_forget()
-    frame_relatorio.pack_forget()
-
-def mostrar_fornecedor():
-    frame_fornecedor.pack(fill='both', padx=10, pady=10)
-    frame_produtos.pack_forget()
-    frame_vendas.pack_forget()
-    frame_cliente.pack_forget()
-    frame_funcionario.pack_forget()
-    frame_relatorio.pack_forget()
-
-def mostrar_funcionario():
-    frame_funcionario.pack(fill='both', padx=10, pady=10)
-    frame_produtos.pack_forget()
-    frame_vendas.pack_forget()
-    frame_cliente.pack_forget()
-    frame_fornecedor.pack_forget()
-    frame_relatorio.pack_forget()
-
-def mostrar_relatorio():
-    frame_produtos.pack_forget()
-    frame_vendas.pack_forget()
-    frame_cliente.pack_forget()
-    frame_fornecedor.pack_forget()
-    frame_funcionario.pack_forget()
-    frame_relatorio.pack(fill='both', padx=10, pady=10)
+def mostrar_frame(frame_atual):
+    for frame in frames:
+        frame.pack_forget()
+    frame_atual.pack(fill="both", expand=True, padx=20, pady=20)
 
 # Janela principal
 root = tk.Tk()
 root.title("Sistema de Vendas")
-root.geometry("1000x700")
+root.geometry("1100x750")
+root.configure(bg="#f5f5f5")
 
 # Frame de navegação lateral
-frame_nav = tk.Frame(root, bg="#2196F3", width=200)
+frame_nav = tk.Frame(root, bg="#1E88E5", width=220)
 frame_nav.pack(side="left", fill="y")
 
+# Título do menu
+tk.Label(frame_nav, text="Menu", font=("Arial", 18, "bold"), bg="#1E88E5", fg="white").pack(pady=20)
+
 # Botões do menu lateral
-btn_cadastrar_produtos = tk.Button(frame_nav, text="Cadastro de Produtos", command=mostrar_cadastro_produtos, font=("Arial", 14), bg="#2196F3", fg="white", relief="flat")
-btn_cadastrar_produtos.pack(fill='x', pady=5)
+menu_options = [
+    ("Cadastro de Produtos", lambda: mostrar_frame(frame_produtos)),
+    ("Registro de Vendas", lambda: mostrar_frame(frame_vendas)),
+    ("Cadastro de Clientes", lambda: mostrar_frame(frame_cliente)),
+    ("Cadastro de Fornecedores", lambda: mostrar_frame(frame_fornecedor)),
+    ("Cadastro de Funcionários", lambda: mostrar_frame(frame_funcionario)),
+]
 
-btn_registrar_vendas = tk.Button(frame_nav, text="Registro de Vendas", command=mostrar_registro_vendas, font=("Arial", 14), bg="#2196F3", fg="white", relief="flat")
-btn_registrar_vendas.pack(fill='x', pady=5)
-
-btn_cliente = tk.Button(frame_nav, text="Cadastro de Clientes", command=mostrar_cliente, font=("Arial", 14), bg="#2196F3", fg="white", relief="flat")
-btn_cliente.pack(fill='x', pady=5)
-
-btn_fornecedor = tk.Button(frame_nav, text="Cadastro de Fornecedores", command=mostrar_fornecedor, font=("Arial", 14), bg="#2196F3", fg="white", relief="flat")
-btn_fornecedor.pack(fill='x', pady=5)
-
-btn_funcionario = tk.Button(frame_nav, text="Cadastro de Funcionários", command=mostrar_funcionario, font=("Arial", 14), bg="#2196F3", fg="white", relief="flat")
-btn_funcionario.pack(fill='x', pady=5)
-
-btn_relatorio = tk.Button(frame_nav, text="Relatório", command=mostrar_relatorio, font=("Arial", 14), bg="#2196F3", fg="white", relief="flat")
-btn_relatorio.pack(fill='x', pady=5)
+for text, command in menu_options:
+    btn = tk.Button(frame_nav, text=text, command=command, font=("Arial", 14), bg="#42A5F5", fg="white", relief="flat")
+    btn.pack(fill="x", pady=10, padx=10)
 
 # Frames principais para cada aba
-frame_produtos = tk.Frame(root)
-frame_vendas = tk.Frame(root)
-frame_cliente = tk.Frame(root)
-frame_fornecedor = tk.Frame(root)
-frame_funcionario = tk.Frame(root)
-frame_relatorio = tk.Frame(root)
-frame_lista_produtos = tk.Frame(frame_produtos)
-frame_lista_clientes = tk.Frame(frame_cliente)
-frame_lista_funcionarios = tk.Frame(frame_funcionario)
-frame_lista_fornecedores = tk.Frame(frame_fornecedor)
+frames = []
+frame_produtos = tk.Frame(root, bg="#ffffff")
+frame_vendas = tk.Frame(root, bg="#ffffff")
+frame_cliente = tk.Frame(root, bg="#ffffff")
+frame_fornecedor = tk.Frame(root, bg="#ffffff")
+frame_funcionario = tk.Frame(root, bg="#ffffff")
 
-# Campos para cadastro de produtos
-tk.Label(frame_produtos, text="Nome do Produto", font=("Arial", 12)).pack(pady=5)
-entry_nome_produto = tk.Entry(frame_produtos, font=("Arial", 12))
-entry_nome_produto.pack(pady=5)
+frames.extend([frame_produtos, frame_vendas, frame_cliente, frame_fornecedor, frame_funcionario])
 
-tk.Label(frame_produtos, text="Preço", font=("Arial", 12)).pack(pady=5)
-entry_preco_produto = tk.Entry(frame_produtos, font=("Arial", 12))
-entry_preco_produto.pack(pady=5)
+# Função para criar um campo de entrada com rótulo
+def criar_campo(frame, texto_label):
+    tk.Label(frame, text=texto_label, font=("Arial", 12), bg="#ffffff").pack(pady=5, anchor="w")
+    entry = tk.Entry(frame, font=("Arial", 12))
+    entry.pack(pady=5, fill="x")
+    return entry
 
-tk.Label(frame_produtos, text="Estoque", font=("Arial", 12)).pack(pady=5)
-entry_estoque_produto = tk.Entry(frame_produtos, font=("Arial", 12))
-entry_estoque_produto.pack(pady=5)
+# Cadastro de Produtos
+frame_produtos_title = tk.Label(frame_produtos, text="Cadastro de Produtos", font=("Arial", 20, "bold"), bg="#ffffff")
+frame_produtos_title.pack(pady=10)
 
-btn_cadastrar_produto = tk.Button(frame_produtos, text="Cadastrar Produto", command=lambda: cadastrar_produto(entry_nome_produto, entry_preco_produto, entry_estoque_produto, frame_lista_produtos), font=("Arial", 12))
-btn_cadastrar_produto.pack(pady=10)
+entry_nome_produto = criar_campo(frame_produtos, "Nome do Produto")
+entry_preco_produto = criar_campo(frame_produtos, "Preço")
+entry_estoque_produto = criar_campo(frame_produtos, "Estoque")
 
-frame_lista_produtos.pack(fill='both', expand=True)
+btn_cadastrar_produto = tk.Button(
+    frame_produtos,
+    text="Cadastrar Produto",
+    command=lambda: cadastrar_produto(entry_nome_produto, entry_preco_produto, entry_estoque_produto, frame_lista_produtos),
+    font=("Arial", 12), bg="#42A5F5", fg="white"
+)
+btn_cadastrar_produto.pack(pady=20)
 
-# Campos para registrar vendas
-tk.Label(frame_vendas, text="Nome do Produto", font=("Arial", 12)).pack(pady=5)
-entry_nome_venda = tk.Entry(frame_vendas, font=("Arial", 12))
-entry_nome_venda.pack(pady=5)
+frame_lista_produtos = tk.Frame(frame_produtos, bg="#f5f5f5", relief="groove", bd=2)
+frame_lista_produtos.pack(fill="both", expand=True, pady=10)
 
-tk.Label(frame_vendas, text="Quantidade", font=("Arial", 12)).pack(pady=5)
-entry_quantidade_venda = tk.Entry(frame_vendas, font=("Arial", 12))
-entry_quantidade_venda.pack(pady=5)
+# Registro de Vendas
+frame_vendas_title = tk.Label(frame_vendas, text="Registro de Vendas", font=("Arial", 20, "bold"), bg="#ffffff")
+frame_vendas_title.pack(pady=10)
 
-tk.Label(frame_vendas, text="Desconto (%)", font=("Arial", 12)).pack(pady=5)
-entry_desconto_venda = tk.Entry(frame_vendas, font=("Arial", 12))
-entry_desconto_venda.pack(pady=5)
+entry_nome_venda = criar_campo(frame_vendas, "Nome do Produto")
+entry_quantidade_venda = criar_campo(frame_vendas, "Quantidade")
+entry_desconto_venda = criar_campo(frame_vendas, "Desconto (%)")
 
-btn_registrar_venda = tk.Button(frame_vendas, text="Registrar Venda", command=lambda: registrar_venda(entry_nome_venda, entry_quantidade_venda, entry_desconto_venda, frame_lista_produtos), font=("Arial", 12))
-btn_registrar_venda.pack(pady=10)
+btn_registrar_venda = tk.Button(
+    frame_vendas,
+    text="Registrar Venda",
+    command=lambda: registrar_venda(entry_nome_venda, entry_quantidade_venda, entry_desconto_venda, frame_lista_produtos),
+    font=("Arial", 12), bg="#42A5F5", fg="white"
+)
+btn_registrar_venda.pack(pady=20)
 
-# Campos para cadastrar cliente
-tk.Label(frame_cliente, text="Nome do Cliente", font=("Arial", 12)).pack(pady=5)
-entry_nome_cliente = tk.Entry(frame_cliente, font=("Arial", 12))
-entry_nome_cliente.pack(pady=5)
+# Cadastro de Clientes
+frame_cliente_title = tk.Label(frame_cliente, text="Cadastro de Clientes", font=("Arial", 20, "bold"), bg="#ffffff")
+frame_cliente_title.pack(pady=10)
 
-tk.Label(frame_cliente, text="Telefone", font=("Arial", 12)).pack(pady=5)
-entry_telefone_cliente = tk.Entry(frame_cliente, font=("Arial", 12))
-entry_telefone_cliente.pack(pady=5)
+entry_nome_cliente = criar_campo(frame_cliente, "Nome do Cliente")
+entry_telefone_cliente = criar_campo(frame_cliente, "Telefone")
 
-btn_cadastrar_cliente = tk.Button(frame_cliente, text="Cadastrar Cliente", command=lambda: cadastrar_cliente(entry_nome_cliente, entry_telefone_cliente, frame_lista_clientes), font=("Arial", 12))
-btn_cadastrar_cliente.pack(pady=10)
+btn_cadastrar_cliente = tk.Button(
+    frame_cliente,
+    text="Cadastrar Cliente",
+    command=lambda: cadastrar_cliente(entry_nome_cliente, entry_telefone_cliente, frame_lista_clientes),
+    font=("Arial", 12), bg="#42A5F5", fg="white"
+)
+btn_cadastrar_cliente.pack(pady=20)
 
-frame_lista_clientes.pack(fill='both', expand=True)
+frame_lista_clientes = tk.Frame(frame_cliente, bg="#f5f5f5", relief="groove", bd=2)
+frame_lista_clientes.pack(fill="both", expand=True, pady=10)
 
-# Campos para cadastrar fornecedor
-tk.Label(frame_fornecedor, text="Nome do Fornecedor", font=("Arial", 12)).pack(pady=5)
-entry_nome_fornecedor = tk.Entry(frame_fornecedor, font=("Arial", 12))
-entry_nome_fornecedor.pack(pady=5)
+# Cadastro de Fornecedores
+frame_fornecedor_title = tk.Label(frame_fornecedor, text="Cadastro de Fornecedores", font=("Arial", 20, "bold"), bg="#ffffff")
+frame_fornecedor_title.pack(pady=10)
 
-tk.Label(frame_fornecedor, text="Telefone", font=("Arial", 12)).pack(pady=5)
-entry_telefone_fornecedor = tk.Entry(frame_fornecedor, font=("Arial", 12))
-entry_telefone_fornecedor.pack(pady=5)
+entry_nome_fornecedor = criar_campo(frame_fornecedor, "Nome do Fornecedor")
+entry_telefone_fornecedor = criar_campo(frame_fornecedor, "Telefone")
 
-btn_cadastrar_fornecedor = tk.Button(frame_fornecedor, text="Cadastrar Fornecedor", command=lambda: cadastrar_fornecedor(entry_nome_fornecedor, entry_telefone_fornecedor, frame_lista_fornecedores), font=("Arial", 12))
-btn_cadastrar_fornecedor.pack(pady=10)
+btn_cadastrar_fornecedor = tk.Button(
+    frame_fornecedor,
+    text="Cadastrar Fornecedor",
+    command=lambda: cadastrar_fornecedor(entry_nome_fornecedor, entry_telefone_fornecedor, frame_lista_fornecedores),
+    font=("Arial", 12), bg="#42A5F5", fg="white"
+)
+btn_cadastrar_fornecedor.pack(pady=20)
 
-frame_lista_fornecedores.pack(fill='both', expand=True)
+frame_lista_fornecedores = tk.Frame(frame_fornecedor, bg="#f5f5f5", relief="groove", bd=2)
+frame_lista_fornecedores.pack(fill="both", expand=True, pady=10)
 
-# Campos para cadastrar funcionário
-tk.Label(frame_funcionario, text="Nome do Funcionário", font=("Arial", 12)).pack(pady=5)
-entry_nome_funcionario = tk.Entry(frame_funcionario, font=("Arial", 12))
-entry_nome_funcionario.pack(pady=5)
+# Cadastro de Funcionários
+frame_funcionario_title = tk.Label(frame_funcionario, text="Cadastro de Funcionários", font=("Arial", 20, "bold"), bg="#ffffff")
+frame_funcionario_title.pack(pady=10)
 
-tk.Label(frame_funcionario, text="Cargo", font=("Arial", 12)).pack(pady=5)
-entry_cargo_funcionario = tk.Entry(frame_funcionario, font=("Arial", 12))
-entry_cargo_funcionario.pack(pady=5)
+entry_nome_funcionario = criar_campo(frame_funcionario, "Nome do Funcionário")
+entry_cargo_funcionario = criar_campo(frame_funcionario, "Cargo")
 
-btn_cadastrar_funcionario = tk.Button(frame_funcionario, text="Cadastrar Funcionário", command=lambda: cadastrar_funcionario(entry_nome_funcionario, entry_cargo_funcionario, frame_lista_funcionarios), font=("Arial", 12))
-btn_cadastrar_funcionario.pack(pady=10)
+btn_cadastrar_funcionario = tk.Button(
+    frame_funcionario,
+    text="Cadastrar Funcionário",
+    command=lambda: cadastrar_funcionario(entry_nome_funcionario, entry_cargo_funcionario, frame_lista_funcionarios),
+    font=("Arial", 12), bg="#42A5F5", fg="white"
+)
+btn_cadastrar_funcionario.pack(pady=20)
 
-frame_lista_funcionarios.pack(fill='both', expand=True)
+frame_lista_funcionarios = tk.Frame(frame_funcionario, bg="#f5f5f5", relief="groove", bd=2)
+frame_lista_funcionarios.pack(fill="both", expand=True, pady=10)
 
 # Exibir o primeiro frame
-mostrar_cadastro_produtos()
+mostrar_frame(frame_produtos)
 
 root.mainloop()
