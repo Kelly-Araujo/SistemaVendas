@@ -20,7 +20,8 @@ Este é um projeto simples de controle de vendas desenvolvido em Python, utiliza
 3. Execute o programa:
    ''python sistema_vendas.py
 
-*Estrutura do Projeto*
+## Estrutura do Projeto
+
 Cadastro de Produtos: Formulário para adicionar novos produtos ao sistema.
 Registro de Vendas: Tela para registrar vendas de produtos disponíveis no estoque.
 Relatórios: Geração de relatórios simples sobre as vendas e o estoque.
@@ -28,4 +29,4 @@ Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias ou novas funcionalidades.
 
 
-Desenvolvido por Kelly Araújo 😊
+## Desenvolvido por Kelly Araújo 😊
