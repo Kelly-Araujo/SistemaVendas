@@ -44,6 +44,8 @@ def registrar_venda(entry_nome_venda, entry_quantidade_venda, entry_desconto_ven
     entry_desconto_venda.delete(0, tk.END)
 
     messagebox.showinfo("Sucesso", f"Venda registrada com sucesso! Total com desconto: R${total_com_desconto:.2f}")
+    
+    # Atualizando a lista de produtos após a venda
     atualizar_lista_produtos(frame_lista_produtos)
 
 def gerar_relatorio():

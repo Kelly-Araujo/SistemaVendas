@@ -20,7 +20,6 @@ def validar_telefone(telefone):
     return True
 
 # Função para gerar o relatório
-# Função para gerar o relatório
 def gerar_relatorio():
     # Exemplo de dados - no seu código, esses dados seriam dinamicamente coletados
     vendas_today = 0  # Exemplo de número de vendas do dia
@@ -121,6 +120,36 @@ def criar_campo(frame, texto_label, placeholder=""):
     entry.pack(pady=5, fill="x")
     return entry
 
+# Funções para registrar os dados e atualizar as listas
+
+# Lista global de vendas
+lista_vendas = []
+
+def registrar_venda(entry_nome_venda, entry_quantidade_venda, entry_desconto_venda, frame_lista_vendas):
+    produto = entry_nome_venda.get()
+    quantidade = int(entry_quantidade_venda.get())
+    desconto = float(entry_desconto_venda.get())
+
+    # Adicionando a venda à lista de vendas
+    venda = {
+        "produto": produto,
+        "quantidade": quantidade,
+        "desconto": desconto
+    }
+    lista_vendas.append(venda)
+
+    # Atualizando a interface com a nova lista de vendas
+    atualizar_lista_vendas(frame_lista_vendas)
+
+def atualizar_lista_vendas(frame_lista_vendas):
+    # Limpar a lista existente
+    for widget in frame_lista_vendas.winfo_children():
+        widget.destroy()
+
+    # Adicionar as vendas à lista
+    for venda in lista_vendas:
+        tk.Label(frame_lista_vendas, text=f"Produto: {venda['produto']} | Quantidade: {venda['quantidade']} | Desconto: {venda['desconto']}%", bg="#e9ecef", font=FONT_LABEL).pack(fill="x", pady=5)
+
 # Cadastro de Produtos
 frame_produtos_title = tk.Label(frame_produtos, text="Cadastro de Produtos", font=FONT_TITLE, bg=STYLE_BG)
 frame_produtos_title.pack(pady=10)
@@ -149,7 +178,7 @@ entry_desconto_venda = criar_campo(frame_vendas, "Desconto (%)", "Ex: 10")
 
 btn_registrar_venda = tk.Button(
     frame_vendas, text="Registrar Venda",
-    command=lambda: registrar_venda(entry_nome_venda, entry_quantidade_venda, entry_desconto_venda, frame_lista_produtos),
+    command=lambda: registrar_venda(entry_nome_venda, entry_quantidade_venda, entry_desconto_venda, frame_lista_vendas),
     font=FONT_BUTTON, bg=STYLE_BUTTON, fg="white", activebackground=STYLE_HOVER, activeforeground="white"
 )
 btn_registrar_venda.pack(pady=20)
@@ -161,12 +190,13 @@ frame_lista_vendas.pack(fill="both", expand=True, pady=10)
 frame_cliente_title = tk.Label(frame_cliente, text="Cadastro de Clientes", font=FONT_TITLE, bg=STYLE_BG)
 frame_cliente_title.pack(pady=10)
 
-entry_nome_cliente = criar_campo(frame_cliente, "Nome do Cliente", "Ex: João da Silva")
-entry_telefone_cliente = criar_campo(frame_cliente, "Telefone", "Ex: (11) 98765-4321")
+entry_nome_cliente = criar_campo(frame_cliente, "Nome do Cliente", "Ex: João Silva")
+entry_telefone_cliente = criar_campo(frame_cliente, "Telefone", "Ex: (11) 99999-9999")
+entry_email_cliente = criar_campo(frame_cliente, "E-mail", "Ex: exemplo@email.com")
 
 btn_cadastrar_cliente = tk.Button(
     frame_cliente, text="Cadastrar Cliente",
-    command=lambda: cadastrar_cliente(entry_nome_cliente, entry_telefone_cliente, frame_lista_clientes) if validar_telefone(entry_telefone_cliente.get()) else messagebox.showerror("Erro", "Telefone deve ser numérico e ter 11 dígitos!"),
+    command=lambda: cadastrar_cliente(entry_nome_cliente, entry_telefone_cliente, entry_email_cliente, frame_lista_clientes),
     font=FONT_BUTTON, bg=STYLE_BUTTON, fg="white", activebackground=STYLE_HOVER, activeforeground="white"
 )
 btn_cadastrar_cliente.pack(pady=20)
@@ -178,12 +208,13 @@ frame_lista_clientes.pack(fill="both", expand=True, pady=10)
 frame_fornecedor_title = tk.Label(frame_fornecedor, text="Cadastro de Fornecedores", font=FONT_TITLE, bg=STYLE_BG)
 frame_fornecedor_title.pack(pady=10)
 
-entry_nome_fornecedor = criar_campo(frame_fornecedor, "Nome do Fornecedor", "Ex: Fornecedor X")
-entry_telefone_fornecedor = criar_campo(frame_fornecedor, "Telefone", "Ex: (11) 98765-4321")
+entry_nome_fornecedor = criar_campo(frame_fornecedor, "Nome do Fornecedor", "Ex: Fornecedor A")
+entry_telefone_fornecedor = criar_campo(frame_fornecedor, "Telefone", "Ex: (11) 98888-8888")
+entry_email_fornecedor = criar_campo(frame_fornecedor, "E-mail", "Ex: fornecedor@email.com")
 
 btn_cadastrar_fornecedor = tk.Button(
     frame_fornecedor, text="Cadastrar Fornecedor",
-    command=lambda: cadastrar_fornecedor(entry_nome_fornecedor, entry_telefone_fornecedor, frame_lista_fornecedores) if validar_telefone(entry_telefone_fornecedor.get()) else messagebox.showerror("Erro", "Telefone deve ser numérico e ter 11 dígitos!"),
+    command=lambda: cadastrar_fornecedor(entry_nome_fornecedor, entry_telefone_fornecedor, entry_email_fornecedor, frame_lista_fornecedores),
     font=FONT_BUTTON, bg=STYLE_BUTTON, fg="white", activebackground=STYLE_HOVER, activeforeground="white"
 )
 btn_cadastrar_fornecedor.pack(pady=20)
@@ -195,12 +226,13 @@ frame_lista_fornecedores.pack(fill="both", expand=True, pady=10)
 frame_funcionario_title = tk.Label(frame_funcionario, text="Cadastro de Funcionários", font=FONT_TITLE, bg=STYLE_BG)
 frame_funcionario_title.pack(pady=10)
 
-entry_nome_funcionario = criar_campo(frame_funcionario, "Nome do Funcionário", "Ex: Maria Souza")
-entry_telefone_funcionario = criar_campo(frame_funcionario, "Telefone", "Ex: (11) 98765-4321")
+entry_nome_funcionario = criar_campo(frame_funcionario, "Nome do Funcionário", "Ex: Ana Pereira")
+entry_telefone_funcionario = criar_campo(frame_funcionario, "Telefone", "Ex: (11) 97777-7777")
+entry_email_funcionario = criar_campo(frame_funcionario, "E-mail", "Ex: ana@email.com")
 
 btn_cadastrar_funcionario = tk.Button(
     frame_funcionario, text="Cadastrar Funcionário",
-    command=lambda: cadastrar_funcionario(entry_nome_funcionario, entry_telefone_funcionario, frame_lista_funcionarios) if validar_telefone(entry_telefone_funcionario.get()) else messagebox.showerror("Erro", "Telefone deve ser numérico e ter 11 dígitos!"),
+    command=lambda: cadastrar_funcionario(entry_nome_funcionario, entry_telefone_funcionario, entry_email_funcionario, frame_lista_funcionarios),
     font=FONT_BUTTON, bg=STYLE_BUTTON, fg="white", activebackground=STYLE_HOVER, activeforeground="white"
 )
 btn_cadastrar_funcionario.pack(pady=20)
@@ -208,8 +240,9 @@ btn_cadastrar_funcionario.pack(pady=20)
 frame_lista_funcionarios = tk.Frame(frame_funcionario, bg="#e9ecef", relief="sunken", bd=2)
 frame_lista_funcionarios.pack(fill="both", expand=True, pady=10)
 
-# Exibe o primeiro frame
+# Iniciar com a tela de produtos
 mostrar_frame(frame_produtos)
 
-# Inicia a janela principal
+
+
 root.mainloop()
